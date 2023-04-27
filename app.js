@@ -5,12 +5,18 @@ const path=require('path');
 const rootDir=require('./utils/path');
 
 const app = express();
+app.set('view engine', 'pug') // register the template engine
+app.set('views', 'views') // specify the views directory
+app.set('test_title','Hello world');
 
-const adminRoutes=require('./routes/admin');
+
+console.log('app.set',app.get('test_title'));
+
+const {routes:adminRoutes}=require('./routes/admin');
 const shopRoutes=require('./routes/shop')
 
 // get body data
-app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.urlencoded())
 // Static file 
 app.use(express.static(path.join(rootDir,'public')))
 

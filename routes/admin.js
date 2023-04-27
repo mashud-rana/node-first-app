@@ -2,8 +2,8 @@ const path=require('path');
 const express=require('express');
 // Root Dir
 const rootDir=require('../utils/path');
-const app=express();
 
+const products=[];
 
 
 // app.use(bodyParser.urlencoded());
@@ -18,7 +18,10 @@ route.get('/add-product',(req,res,next)=>{
 
 route.post('/add-product',(req,res,next)=>{
     console.log(req.body);
+    products.push({title:req.body.title});
     res.redirect('/');
 });
 
-module.exports=route;
+// module.exports=route;
+exports.routes=route;
+exports.products=products;
