@@ -7,10 +7,7 @@ const rootDir=require('./utils/path');
 const app = express();
 app.set('view engine', 'pug') // register the template engine
 app.set('views', 'views') // specify the views directory
-app.set('test_title','Hello world');
 
-
-console.log('app.set',app.get('test_title'));
 
 const {routes:adminRoutes}=require('./routes/admin');
 const shopRoutes=require('./routes/shop')
@@ -30,7 +27,8 @@ app.use(shopRoutes);
 
 // 404 page
 app.use((req,res,next)=>{
-    res.status(404).sendFile(path.join(rootDir,'views','404.html'));
+    // res.status(404).sendFile(path.join(rootDir,'views','404.html'));
+    res.render('404');
 });
 
 app.listen(3000);

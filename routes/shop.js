@@ -9,7 +9,7 @@ route.get('/', (req, res, next) => {
     // console.log('shop',products);
     // res.sendFile(path.join(rootDir,'views','shop.html'));
     
-    res.render('shop',{shopTitle:'Shop',prods:products});
+    res.render('shop',{pageTitle:'Shop',prods:products,path:'/'});
 });
 
 module.exports=route;
