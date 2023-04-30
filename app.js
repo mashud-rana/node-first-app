@@ -5,7 +5,7 @@ const path=require('path');
 const rootDir=require('./utils/path');
 
 const app = express();
-app.set('view engine', 'pug') // register the template engine
+app.set('view engine', 'ejs') // register the template engine
 app.set('views', 'views') // specify the views directory
 
 
@@ -28,7 +28,7 @@ app.use(shopRoutes);
 // 404 page
 app.use((req,res,next)=>{
     // res.status(404).sendFile(path.join(rootDir,'views','404.html'));
-    res.render('404');
+    res.render('404',{pageTitle:"404 page not found",path:""});
 });
 
-app.listen(3000);
+app.listen(8000);
