@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const path=require('path');
 // Root Dir
 const rootDir=require('./utils/path');
+// 404 Error Controller
+const errorController=require('./controllers/error')
 
 const app = express();
 app.set('view engine', 'ejs') // register the template engine
@@ -26,9 +28,6 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 
 // 404 page
-app.use((req,res,next)=>{
-    // res.status(404).sendFile(path.join(rootDir,'views','404.html'));
-    res.render('404',{pageTitle:"404 page not found",path:""});
-});
+app.use(errorController.error404);
 
 app.listen(8000);
