@@ -22,9 +22,9 @@ app.use('/', (req, res, next) => {
     next();
 });
 
+// All route
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
-
 // 404 page
 app.use(errorController.error404);
 

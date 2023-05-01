@@ -6,6 +6,8 @@ const productsController=require('../controllers/products');
 
 
 const route = express.Router();
-route.get('/', productsController.getAllProducts);
+route.get('/',productsController.index)
+route.get('/products', productsController.getAllProducts);
+route.get('/cart',productsController.cart)
 
 module.exports=route;

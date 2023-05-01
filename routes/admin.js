@@ -10,8 +10,7 @@ const route=express.Router();
 
 
 route.get('/add-product',productsController.getAddProduct);
-
 route.post('/add-product',productsController.addNewProduct);
-
+route.get('/products',productsController.adminGetProducts);
 // module.exports=route;
 exports.routes=route;
