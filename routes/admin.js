@@ -14,7 +14,7 @@ const route=express.Router();
 
 route.get('/add-product',(req,res,next)=>{
     // res.sendFile(path.join(rootDir,'views','add-product.html'));
-    res.render('add-product',{pageTitle:'Add Product',path:'/admin/add-product'})
+    res.render('add-product',{layout: false,pageTitle:'Add Product',path:'/admin/add-product'})
 });
 
 route.post('/add-product',(req,res,next)=>{
