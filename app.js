@@ -2,18 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
 // Root Dir
-const rootDir = require('./utils/path');
 const { routes: adminRoutes } = require('./routes/admin');
 const shopRoutes = require('./routes/shop')
-const expressHbs = require('express-handlebars');
+const rootDir=require('./utils/path');
+// 404 Error Controller
+const errorController=require('./controllers/error')
 
 const app = express();
-
-
-app.engine('hbs', expressHbs.engine({extname:'.hbs',layoutsDir:'views/layouts',defaultLayout:'main-layout'}));
-app.set('view engine', 'hbs');
-// Pug Engine
-// app.set('view engine', 'pug') // register the template engine
+app.set('view engine', 'ejs') // register the template engine
 app.set('views', 'views') // specify the views directory
 
 // get body data
@@ -30,9 +26,6 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 // 404 page
-app.use((req, res, next) => {
-    // res.status(404).sendFile(path.join(rootDir,'views','404.html'));
-    res.render('404');
-});
+app.use(errorController.error404);
 
-app.listen(3000);
+app.listen(8000);

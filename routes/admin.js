@@ -1,10 +1,7 @@
-const path=require('path');
 const express=require('express');
 // Root Dir
 const rootDir=require('../utils/path');
-
-const products=[];
-
+const productsController=require('../controllers/products');
 
 // app.use(bodyParser.urlencoded());
 
@@ -12,17 +9,9 @@ const products=[];
 const route=express.Router();
 
 
-route.get('/add-product',(req,res,next)=>{
-    // res.sendFile(path.join(rootDir,'views','add-product.html'));
-    res.render('add-product',{layout: false,pageTitle:'Add Product',path:'/admin/add-product'})
-});
+route.get('/add-product',productsController.getAddProduct);
 
-route.post('/add-product',(req,res,next)=>{
-    console.log(req.body);
-    products.push({title:req.body.title});
-    res.redirect('/');
-});
+route.post('/add-product',productsController.addNewProduct);
 
 // module.exports=route;
 exports.routes=route;
-exports.products=products;
