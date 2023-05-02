@@ -3,8 +3,12 @@ const path=require('path');
 
 
 module.exports=class Product {
-    constructor(t){
-        this.title=t;
+    constructor(title,price,description,imageUrl){
+        this.id=Math.random()
+        this.title=title;
+        this.price=price;
+        this.description=description;
+        this.imageUrl=imageUrl;
     }
 
     save(){
@@ -31,8 +35,25 @@ module.exports=class Product {
             if(err){
                 cb([]);
             }
-
             cb(JSON.parse(fileContent));
+        })
+    }
+
+    static find(productId,cb){
+        const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
+        fs.readFile(p,(err,fileContent)=>{
+            if(err){
+                cb(false);
+            }
+            const products=JSON.parse(fileContent);
+            const product=products.find((pro)=>{
+                if(pro.id==productId)
+                {
+                    return pro;
+                }
+            });
+            cb(product);
+
         })
     }
 

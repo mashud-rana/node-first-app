@@ -9,5 +9,6 @@ const route = express.Router();
 route.get('/',productsController.index)
 route.get('/products', productsController.getAllProducts);
 route.get('/cart',productsController.cart)
+route.get('/product-details/:productId',productsController.shopProductDetails)
 
 module.exports=route;

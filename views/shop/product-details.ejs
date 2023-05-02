@@ -1,0 +1,38 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css" />
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <h1>Show Single Products</h1>
+        <% if(prod){ %>
+        
+            <div class="grid">
+                    <article class="card product-item">
+                        <header class="card__header">
+                            <h1 class="product__title"><%= prod.title%></h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="<%= prod.imageUrl %>" alt="<%= prod.title%>">
+                        </div>
+                        <div class="card__content">
+                            <h2 class="prod__price">$<%= prod.price %></h2>
+                            <p class="prod__description"><%= prod.description %></p>
+                        </div>
+                        <div class="card__actions">
+                            <a class="btn">Add to Cart</a>
+                        </div>
+                    </article>
+            </div> 
+          
+        <%}else {%>
+
+            <h1>Product Not Found !!!</h1>
+
+        <%}%>
+      </main>
+  
+    <%- include('../includes/end.ejs') %>
+</body>
