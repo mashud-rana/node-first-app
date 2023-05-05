@@ -8,6 +8,7 @@ const rootDir=require('./utils/path');
 // 404 Error Controller
 const errorController=require('./controllers/error')
 
+
 const app = express();
 app.set('view engine', 'ejs') // register the template engine
 app.set('views', 'views') // specify the views directory

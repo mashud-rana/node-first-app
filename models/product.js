@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path=require('path');
+const db=require('../utils/database')
 
 
 module.exports=class Product {
@@ -12,49 +13,54 @@ module.exports=class Product {
     }
 
     save(){
-        const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
+        return db.execute('INSERT INTO products (title,price,description,imageUrl) VALUES (?, ?, ?, ?)',
+        [this.title,this.price,this.description,this.imageUrl]);
+        // const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
 
-        fs.readFile(p,(err,fileContent)=>{
-            let products=[];
+        // fs.readFile(p,(err,fileContent)=>{
+        //     let products=[];
 
-            if(!err){
-                products=JSON.parse(fileContent);
-            }
+        //     if(!err){
+        //         products=JSON.parse(fileContent);
+        //     }
 
-            products.push(this);
+        //     products.push(this);
 
-            fs.writeFile(p,JSON.stringify(products),(err)=>{
-                console.log(err);
-            });
-        });
+        //     fs.writeFile(p,JSON.stringify(products),(err)=>{
+        //         console.log(err);
+        //     });
+        // });
     }
 
     static fetchAll(cb){
-        const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
-        fs.readFile(p,(err,fileContent)=>{
-            if(err){
-                cb([]);
-            }
-            cb(JSON.parse(fileContent));
-        })
+        // const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
+        // fs.readFile(p,(err,fileContent)=>{
+        //     if(err){
+        //         cb([]);
+        //     }
+        //     cb(JSON.parse(fileContent));
+        // })
+
+        return db.execute('SELECT * FROM products');
     }
 
     static find(productId,cb){
-        const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
-        fs.readFile(p,(err,fileContent)=>{
-            if(err){
-                cb(false);
-            }
-            const products=JSON.parse(fileContent);
-            const product=products.find((pro)=>{
-                if(pro.id==productId)
-                {
-                    return pro;
-                }
-            });
-            cb(product);
+        return db.execute(`SELECT * FROM products WHERE id=?`,[productId])
+        // const p=path.join(path.dirname(process.mainModule.filename),'data','products.json');
+        // fs.readFile(p,(err,fileContent)=>{
+        //     if(err){
+        //         cb(false);
+        //     }
+        //     const products=JSON.parse(fileContent);
+        //     const product=products.find((pro)=>{
+        //         if(pro.id==productId)
+        //         {
+        //             return pro;
+        //         }
+        //     });
+        //     cb(product);
 
-        })
+        // })
     }
 
 };
