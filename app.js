@@ -7,7 +7,10 @@ const shopRoutes = require('./routes/shop')
 const rootDir=require('./utils/path');
 // 404 Error Controller
 const errorController=require('./controllers/error')
-
+// sequelize
+const sequelize=require('./utils/database')
+const Product=require('./models/product')
+const User=require('./models/user')
 
 const app = express();
 app.set('view engine', 'ejs') // register the template engine
@@ -29,4 +32,16 @@ app.use(shopRoutes);
 // 404 page
 app.use(errorController.error404);
 
-app.listen(8000);
+
+// database Relation
+Product.belongsTo(User,{constraints:true,onDelete:"CASCADE"})
+User.hasMany(Product);
+
+sequelize.sync({
+    force:true
+}).then(result=>{
+    app.listen(8000);
+}).catch((error)=>{
+    console.log(error);
+})
+

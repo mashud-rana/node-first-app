@@ -12,9 +12,13 @@ exports.addNewProduct=(req,res,next)=>{
     const description=req.body.description;
     const imageUrl=req.body.image_url;
 
-    const product=new Product(title,price,description,imageUrl);
-    product.save().then(()=>{
-        res.redirect('/products')
+    Product.create({
+        title:title,
+        price:price,
+        imageUrl:imageUrl,
+        description:description
+    }).then(result=>{
+        res.redirect('/products');
     }).catch(error=>{
         console.log(error);
     });
@@ -22,11 +26,16 @@ exports.addNewProduct=(req,res,next)=>{
 };
 
 exports.getAllProducts=(req, res, next)=> {
-    Product.fetchAll().then((result)=>{
-        res.render('shop/product-list',{pageTitle:'Products',prods:result[0],path:'/products'});
-    }).catch((error)=>{
+    Product.findAll().then(products=>{
+        res.render('shop/product-list',{pageTitle:'Products',prods:products,path:'/products'})
+    }).catch(error=>{
         console.log(error);
-    })
+    });
+    // Product.fetchAll().then((result)=>{
+    //     res.render('shop/product-list',{pageTitle:'Products',prods:result[0],path:'/products'});
+    // }).catch((error)=>{
+    //     console.log(error);
+    // })
     // Product.fetchAll((products)=>{
     //     res.render('shop/product-list',{pageTitle:'Products',prods:products,path:'/products'});
     // });
@@ -44,13 +53,17 @@ exports.cart=(req,res,next)=>{
 };
 
 exports.adminGetProducts=(req,res,next)=>{
-    res.render('admin/product-list',{pageTitle:'Admin Products',path:'/admin/products'})
+    Product.findAll().then(products=>{
+        res.render('admin/product-list',{pageTitle:'Admin Products',prods:products,path:'/admin/products'});
+    }).catch(error=>{
+        console.log(error);
+    });
 };
 
 exports.shopProductDetails=(req,res,next)=>{
     const productId=req.params.productId;
-    Product.find(productId).then(([rows,defaultField])=>{
-        res.render('shop/product-details',{path:'/product-details',prod:rows[0],pageTitle:"Product Details"})
+    Product.findByPk(productId).then((product)=>{
+        res.render('shop/product-details',{path:'/product-details',prod:product,pageTitle:"Product Details"})
     }).catch((error)=>{
         console.log(error);
     })
@@ -61,3 +74,45 @@ exports.shopProductDetails=(req,res,next)=>{
     // });
     
 };
+
+exports.adminGetSingleProduct=(req,res,next)=>{
+    let productId=req.params.productId;
+    Product.findByPk(productId).then(product=>{
+        if(!product)
+        {
+            res.redirect('/products');
+        }else{
+            res.render('admin/edit-product',{path:'/product-details',prod:product,pageTitle:"Edit Product"})
+        }
+    }).catch(error=>{
+        console.log(error);
+    })
+}
+
+exports.adminUpdateProduct=(req,res,next)=>{
+    let productId=req.body.product_id;
+    Product.findByPk(productId).then(product=>{
+        product.title=req.body.title;
+        product.price=req.body.price;
+        product.imageUrl=req.body.image_url;
+        product.description=req.body.description;
+        return product.save();
+        
+    }).then(response=>{
+        res.redirect('/admin/products');
+    })
+    .catch(error=>{
+        console.log(error);
+    })
+}
+
+exports.adminProductDelete=(req,res,next)=>{
+    let productId=req.body.product_id;
+    Product.findByPk(productId).then(product=>{
+        return Product.destroy({where:{id:productId}});
+    }).then(response=>{
+        res.redirect('/admin/products');
+    }).catch(error=>{
+        console.log(error);
+    })
+}
